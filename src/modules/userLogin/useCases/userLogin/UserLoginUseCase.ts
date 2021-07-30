@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import { ActiveDirectory } from 'node-ad-tools';
 import { inject, injectable } from 'tsyringe';
 
@@ -47,17 +48,23 @@ class UserLoginUseCase {
       group: user.grupo,
       color,
     });
-
+    const token = jwt.sign({ matricula }, '39037e3095f3328bd2e0ae5938fce30d');
     return createdUser;
   }
-  async execute({ matricula, result }: IRequest): Promise<void> {
+  async execute({ matricula, result }: IRequest): Promise<string | void> {
     const dados_user = ActiveDirectory.createUserObj(result.entry);
 
     const userAlreadyExists = await this.userRepository.findByMat(matricula);
     if (userAlreadyExists) {
-      const token = 's';
+      const token = jwt.sign(
+        { matricula },
+        '39037e3095f3328bd2e0ae5938fce30d',
+        {
+          expiresIn: 1440,
+        }
+      );
+      return token;
     }
-
     if (dados_user.groups.indexOf('AcessosUSR') > -1) {
       if (!userAlreadyExists) {
         const createdUser = await this.createUser(matricula);

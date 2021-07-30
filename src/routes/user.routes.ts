@@ -18,6 +18,6 @@ userRouter.get('/', findAllUsersController.handle);
 
 userRouter.get('/group', findAllUserByGroupController.handle);
 
-userRouter.get('/mat', findUserByMatController.handle);
+userRouter.get('/matricula', findUserByMatController.handle);
 
 export { userRouter };

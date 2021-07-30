@@ -21,7 +21,7 @@ const findAllResetsController = new FindAllResetsController();
 const upload = multer(multerConfig);
 
 ticketsRouter.post('/', upload.single('file'), createTicketController.handle);
-ticketsRouter.patch('/', assignTicketToUserController.handle);
+ticketsRouter.patch('/assign', assignTicketToUserController.handle);
 ticketsRouter.get('/', findAllTicketsController.handle);
 ticketsRouter.patch('/route', routeTicketToUserController.handle);
 ticketsRouter.put(

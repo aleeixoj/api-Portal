@@ -12,8 +12,8 @@ class UserPermissionRepository implements IUserPermissionRepository {
     this.permission = getRepository(Permission);
   }
   async findById(id: string): Promise<Permission> {
-    const user = await this.permission.findOne(id);
-    return user;
+    const permission = await this.permission.findOne({ user_id: id });
+    return permission;
   }
   async list(): Promise<Permission[]> {
     const all = await this.permission.find();

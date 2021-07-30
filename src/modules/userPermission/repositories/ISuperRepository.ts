@@ -7,6 +7,7 @@ interface ISuperPermissionDTO {
 
 interface ISuperPermissionRepository {
   findBySuper(superNumber: number): Promise<Super>;
+  findById(id: string): Promise<Super>;
   list(): Promise<Super[]>;
   create({ name, superNumber }: ISuperPermissionDTO): Promise<void>;
 }

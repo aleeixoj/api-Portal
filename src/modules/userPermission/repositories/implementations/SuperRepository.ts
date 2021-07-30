@@ -11,6 +11,10 @@ class SuperPermissionRepository implements ISuperPermissionRepository {
   constructor() {
     this.repository = getRepository(Super);
   }
+  async findById(id: string): Promise<Super> {
+    const superUser = await this.repository.findOne({ id });
+    return superUser;
+  }
   async findBySuper(superNumber: number): Promise<Super> {
     const superU = await this.repository.findOne({ super: superNumber });
     return superU;

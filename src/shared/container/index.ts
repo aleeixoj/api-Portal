@@ -1,6 +1,7 @@
 import { container } from 'tsyringe';
 
-
+import { SystemRepository } from '../../modules/systems/repositories/implementations/SystemsRepository';
+import { ISystemsRepository } from '../../modules/systems/repositories/ISystemsRepository';
 import { ResetRepository } from '../../modules/tickets/repositories/implementations/ResetRespository';
 import { TicketsRepository } from '../../modules/tickets/repositories/implementations/TicketsRepository';
 import { IResetRepository } from '../../modules/tickets/repositories/IResetRepository';
@@ -48,4 +49,7 @@ container.registerSingleton<IUserTicketsRepository>(
   UserTicketsRepository
 );
 
-
+container.registerSingleton<ISystemsRepository>(
+  'SystemsRepository',
+  SystemRepository
+);

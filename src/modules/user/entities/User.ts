@@ -2,10 +2,17 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToOne,
+  OneToOne,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
+
+import { Permission } from '../../userPermission/entities/Permission';
+import { Super } from '../../userPermission/entities/Super';
 
 @Entity('user')
 class User {
@@ -31,6 +38,15 @@ class User {
   createdAt: Date;
   @UpdateDateColumn()
   lastModified: Date;
+
+  @JoinTable({ name: 'super_user' })
+  @JoinColumn({ name: 'id' })
+  @OneToOne(() => Super)
+  super: Super;
+  @JoinTable({ name: 'super' })
+  @JoinColumn({ name: 'id' })
+  @OneToOne(() => Permission)
+  permission: Permission;
 
   constructor() {
     if (!this.id) {

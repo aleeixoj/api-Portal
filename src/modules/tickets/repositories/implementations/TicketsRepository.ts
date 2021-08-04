@@ -9,13 +9,40 @@ class TicketsRepository implements ITicketsRepository {
   constructor() {
     this.ticket = getRepository(Tickets);
   }
-  async updateRespoById(id: string, respo: string): Promise<void> {
-    await this.ticket.update(id, { responsavel: respo });
+  async findByNchamado(nchamado: string): Promise<Tickets> {
+    const ticket = await this.ticket.findOne({ nchamado });
+    return ticket;
   }
-  async closeTiket({ descr, id, arquivo }: ICloseProps): Promise<void> {
+  async findOpenTicket(): Promise<Tickets[]> {
+    const all = await this.ticket.find({
+      status: 'Aberto',
+      responsavel: 'Não atribuido',
+    });
+    return all;
+  }
+  async findAssignedTickets(responsavel: string): Promise<Tickets[]> {
+    const all = await this.ticket.find({ responsavel });
+    return all;
+  }
+  async updateRespoById(
+    id: string,
+    respo: string,
+    username: string
+  ): Promise<void> {
     await this.ticket.update(id, {
-      status: 'Fechado',
-      desc: descr,
+      responsavel: respo,
+      desc: `Chamado atribuido ao assistente ${username}`,
+    });
+  }
+  async updateTicket({
+    description,
+    id,
+    arquivo,
+    status,
+  }: ICloseProps): Promise<void> {
+    await this.ticket.update(id, {
+      status,
+      desc: description,
       archive: arquivo,
     });
   }

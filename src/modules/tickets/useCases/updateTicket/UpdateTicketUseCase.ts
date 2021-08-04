@@ -4,13 +4,15 @@ import { IResetRepository } from '../../repositories/IResetRepository';
 import { ITicketsRepository } from '../../repositories/ITicketsRepository';
 
 interface IRequest {
-  id: string;
-  descr: string;
+  id?: string;
+  status: string;
   user: string | string[];
   arquivo?: string;
+  nchamado?: string;
+  description: string;
 }
 @injectable()
-class CloseTicketsUseCase {
+class UpdateTicketUseCase {
   constructor(
     @inject('TicketsRepository')
     private ticketsRespository: ITicketsRepository,
@@ -18,27 +20,34 @@ class CloseTicketsUseCase {
     private resetRepository: IResetRepository
   ) {}
 
-  async execute({ id, descr, user, arquivo }: IRequest): Promise<void> {
+  async execute({
+    status,
+    user,
+    arquivo,
+    description,
+    id,
+  }: IRequest): Promise<void> {
     const reset = await this.resetRepository.findById(id);
     const ticket = await this.ticketsRespository.findById(id);
     const iUser: string = user.toString();
 
     if (reset) {
-      await this.resetRepository.closeTiket({
+      await this.resetRepository.updateTicket({
         iUser,
         id,
-        descr,
+        description,
         arquivo,
       });
     }
     if (ticket) {
-      await this.ticketsRespository.closeTiket({
+      await this.ticketsRespository.updateTicket({
         iUser,
         id,
-        descr,
+        description,
         arquivo,
+        status,
       });
     }
   }
 }
-export { CloseTicketsUseCase };
+export { UpdateTicketUseCase };

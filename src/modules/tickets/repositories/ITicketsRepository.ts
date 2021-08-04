@@ -16,11 +16,14 @@ interface ITicketsCreateDTO {
 }
 
 interface ITicketsRepository {
+  findOpenTicket(): Promise<Tickets[]>;
   findById(id: string): Promise<Tickets>;
+  findByNchamado(nchamado: string): Promise<Tickets>;
   updateNchamadoById(id: string, nchamado: string): Promise<void>;
-  updateRespoById(id: string, respo: string): Promise<void>;
+  updateRespoById(id: string, respo: string, username: string): Promise<void>;
   list(): Promise<Tickets[]>;
-  closeTiket({ descr, id, arquivo }: ICloseProps): Promise<void>;
+  findAssignedTickets(responsavel: string): Promise<Tickets[]>;
+  updateTicket({ description, id, arquivo }: ICloseProps): Promise<void>;
   create({
     requisitante,
     tipo,

@@ -12,11 +12,16 @@ class ResetRepository implements IResetRepository {
   constructor() {
     this.reset = getRepository(Resets);
   }
-  async closeTiket({ descr, id, iUser, arquivo }: ICloseProps): Promise<void> {
+  async updateTicket({
+    description,
+    id,
+    iUser,
+    arquivo,
+  }: ICloseProps): Promise<void> {
     await this.reset.update(id, {
       status: 'Fechado',
       responsavel: iUser,
-      desc: descr,
+      desc: description,
       archive: arquivo,
     });
   }
@@ -62,6 +67,12 @@ class ResetRepository implements IResetRepository {
     });
     await this.reset.save(resets);
     return resets;
+  }
+  async findOpenTicket(): Promise<Resets[]> {
+    const all = await this.reset.find({
+      status: 'Aberto',
+    });
+    return all;
   }
 }
 

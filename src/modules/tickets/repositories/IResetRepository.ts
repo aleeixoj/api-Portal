@@ -16,8 +16,9 @@ interface IResetCreateDTO {
 interface ICloseProps {
   id: string;
   iUser?: string;
-  descr: string;
+  description: string;
   arquivo?: string;
+  status?: string;
 }
 
 interface IResetRepository {
@@ -25,7 +26,7 @@ interface IResetRepository {
   updateNchamadoById(id: string, nchamado: string): Promise<void>;
   updateRespoById(id: string, respo: string): Promise<void>;
   list(): Promise<Resets[]>;
-  closeTiket({ descr, id, iUser, arquivo }: ICloseProps): Promise<void>;
+  updateTicket({ description, id, iUser, arquivo }: ICloseProps): Promise<void>;
   create({
     requisitante,
     tipo,
@@ -37,6 +38,7 @@ interface IResetRepository {
     color,
     status,
   }: IResetCreateDTO): Promise<Resets>;
+  findOpenReset(): Promise<Resets[]>;
 }
 
 export { IResetCreateDTO, IResetRepository, ICloseProps };

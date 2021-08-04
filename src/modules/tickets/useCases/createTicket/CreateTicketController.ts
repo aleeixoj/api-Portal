@@ -22,6 +22,7 @@ class CreateTicketController {
     if (matricula === undefined) {
       mat = arquivo;
     }
+    console.log(espelho);
     try {
       const create = await createTicketUseCase.execute({
         requisitante,
@@ -32,7 +33,9 @@ class CreateTicketController {
         espelho,
       });
 
-      return response.status(201).json({ create });
+      return response
+        .status(201)
+        .json({ status_message: `Chamado ${create} aberto` });
     } catch (error) {
       return response.json({ status_message: error.message });
     }

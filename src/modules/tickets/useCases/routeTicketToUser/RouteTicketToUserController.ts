@@ -5,16 +5,18 @@ import { RouteTicketToUserUseCase } from './RouteTicketToUserUseCase';
 
 class RouteTicketToUserController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { data } = request.body;
+    const { rotear } = request.body.data;
     const { array } = request.body;
-    const { respo } = request.headers;
     const routeTicketToUserUseCase = container.resolve(
       RouteTicketToUserUseCase
     );
     try {
       await Promise.all(
         array.map(async (id: string) => {
-          await routeTicketToUserUseCase.execute({ id, respo, data });
+          await routeTicketToUserUseCase.execute({
+            id,
+            data: rotear,
+          });
         })
       );
 

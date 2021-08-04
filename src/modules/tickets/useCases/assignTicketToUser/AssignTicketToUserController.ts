@@ -5,22 +5,22 @@ import { AssignTicketToUserUseCase } from './AssignTicketToUserUseCase';
 
 class AssignTicketToUserController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { data } = request.body;
-    const { respo } = request.headers;
+    const { body } = request;
+    const { authorization } = request.headers;
     const assignTicketToUserUseCase = container.resolve(
       AssignTicketToUserUseCase
     );
 
     try {
       await Promise.all(
-        data.map(async (id: string) => {
-          await assignTicketToUserUseCase.execute({ id, respo });
+        body.map(async (id: string) => {
+          await assignTicketToUserUseCase.execute({ id, respo: authorization });
         })
       );
 
       return response.status(201).send();
     } catch (error) {
-      return response.status(400).json({ status_message: error.message });
+      return response.status(500).json({ status_message: error.message });
     }
   }
 }

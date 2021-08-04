@@ -6,7 +6,6 @@ import { ITicketsRepository } from '../../repositories/ITicketsRepository';
 
 interface IRequest {
   id: string;
-  respo: string | string[];
   data: string;
 }
 @injectable()
@@ -20,9 +19,13 @@ class RouteTicketToUserUseCase {
     private userTicketRepository: IUserTicketsRepository
   ) {}
 
-  async execute({ id, respo, data }: IRequest): Promise<void> {
-    const user = await this.userRepository.findByName(data.toString());
-    await this.ticketsRespository.updateRespoById(id, user.matricula);
+  async execute({ id, data }: IRequest): Promise<void> {
+    const user = await this.userRepository.findByName(data);
+    await this.ticketsRespository.updateRespoById(
+      id,
+      user.matricula,
+      user.name
+    );
 
     const find = await this.userTicketRepository.findById(id);
 

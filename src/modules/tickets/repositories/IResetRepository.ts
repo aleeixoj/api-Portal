@@ -23,6 +23,7 @@ interface ICloseProps {
 
 interface IResetRepository {
   findById(id: string): Promise<Resets>;
+  findByNchamado(nchamado: string): Promise<Resets>;
   updateNchamadoById(id: string, nchamado: string): Promise<void>;
   updateRespoById(id: string, respo: string): Promise<void>;
   list(): Promise<Resets[]>;
@@ -39,6 +40,9 @@ interface IResetRepository {
     status,
   }: IResetCreateDTO): Promise<Resets>;
   findOpenReset(): Promise<Resets[]>;
+  findSevenData(): Promise<[Resets[], number]>;
+  findFifteenData(): Promise<[Resets[], number]>;
+  findThirtyData(): Promise<[Resets[], number]>;
 }
 
 export { IResetCreateDTO, IResetRepository, ICloseProps };

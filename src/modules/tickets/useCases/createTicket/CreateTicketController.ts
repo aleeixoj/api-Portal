@@ -22,7 +22,6 @@ class CreateTicketController {
     if (matricula === undefined) {
       mat = arquivo;
     }
-    console.log(espelho);
     try {
       const create = await createTicketUseCase.execute({
         requisitante,

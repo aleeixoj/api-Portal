@@ -1,10 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 
 import { Systems } from '../../entities/Systems';
-import {
-  ISystemsCreateDTO,
-  ISystemsRepository,
-} from '../../repositories/ISystemsRepository';
+import { ISystemsRepository } from '../../repositories/ISystemsRepository';
 
 @injectable()
 class FindAllSystemsUseCase {

@@ -6,8 +6,6 @@
   },
   "extends": [
     "airbnb-base",
-    //"standard",
-    //"google",
     "plugin:@typescript-eslint/recommended",
     "prettier",
     "plugin:prettier/recommended"

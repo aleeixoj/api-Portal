@@ -6,6 +6,8 @@ import { ResetRepository } from '../../modules/tickets/repositories/implementati
 import { TicketsRepository } from '../../modules/tickets/repositories/implementations/TicketsRepository';
 import { IResetRepository } from '../../modules/tickets/repositories/IResetRepository';
 import { ITicketsRepository } from '../../modules/tickets/repositories/ITicketsRepository';
+import { TypesRepository } from '../../modules/types/repositories/implementations/TypesRepository';
+import { ITypesRepository } from '../../modules/types/repositories/ITypesRepository';
 import { UserRepository } from '../../modules/user/repositories/implementations/UserRepository';
 import { IUserRepository } from '../../modules/user/repositories/IUserRepository';
 import { UserLoginRepository } from '../../modules/userLogin/repositories/implementations/UserLoginRepository';
@@ -52,4 +54,9 @@ container.registerSingleton<IUserTicketsRepository>(
 container.registerSingleton<ISystemsRepository>(
   'SystemsRepository',
   SystemRepository
+);
+
+container.registerSingleton<ITypesRepository>(
+  'TypesRepository',
+  TypesRepository
 );

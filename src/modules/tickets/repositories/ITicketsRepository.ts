@@ -36,6 +36,9 @@ interface ITicketsRepository {
     color,
     status,
   }: ITicketsCreateDTO): Promise<Tickets>;
+  findSevenData(): Promise<[Tickets[], number]>;
+  findFifteenData(): Promise<[Tickets[], number]>;
+  findThirtyData(): Promise<[Tickets[], number]>;
 }
 
 export { ITicketsCreateDTO, ITicketsRepository };

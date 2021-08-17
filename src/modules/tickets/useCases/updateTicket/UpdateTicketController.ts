@@ -10,7 +10,6 @@ class UpdateTicketController {
     const { authorization } = request.headers;
     const arquivo = request.file?.filename;
     const updateTicketUseCase = container.resolve(UpdateTicketUseCase);
-
     try {
       await updateTicketUseCase.execute({
         status,

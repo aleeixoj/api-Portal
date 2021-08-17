@@ -12,6 +12,43 @@ class ResetRepository implements IResetRepository {
   constructor() {
     this.reset = getRepository(Resets);
   }
+  async findSevenData(): Promise<[Resets[], number]> {
+    const sistema = await this.reset.query(
+      `SELECT sistema, count(sistema) as quantidade
+      FROM public.resets 
+      WHERE created > (NOW() - interval '7 days')
+      and created < now() 
+      group by sistema`
+    );
+
+    return sistema;
+  }
+  async findFifteenData(): Promise<[Resets[], number]> {
+    const sistema = await this.reset.query(
+      `SELECT sistema, count(sistema) as quantidade
+      FROM public.resets 
+      WHERE created > (NOW() - interval '15 days')
+      and created < now() 
+      group by sistema`
+    );
+
+    return sistema;
+  }
+  async findThirtyData(): Promise<[Resets[], number]> {
+    const sistema = await this.reset.query(
+      `SELECT sistema, count(sistema) as quantidade
+      FROM public.resets 
+      WHERE created > (NOW() - interval '30 days')
+      and created < now() 
+      group by sistema`
+    );
+
+    return sistema;
+  }
+  async findByNchamado(nchamado: string): Promise<Resets> {
+    const reset = await this.reset.findOne({ nchamado });
+    return reset;
+  }
   async updateTicket({
     description,
     id,
@@ -28,7 +65,6 @@ class ResetRepository implements IResetRepository {
   async updateRespoById(id: string, respo: string): Promise<void> {
     await this.reset.update(id, { responsavel: respo });
   }
-
   async updateNchamadoById(id: string, nchamado: string): Promise<void> {
     await this.reset.update(id, { nchamado });
   }
@@ -68,7 +104,7 @@ class ResetRepository implements IResetRepository {
     await this.reset.save(resets);
     return resets;
   }
-  async findOpenTicket(): Promise<Resets[]> {
+  async findOpenReset(): Promise<Resets[]> {
     const all = await this.reset.find({
       status: 'Aberto',
     });

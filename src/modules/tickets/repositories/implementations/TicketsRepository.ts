@@ -1,4 +1,5 @@
-import { getRepository, Repository } from 'typeorm';
+import { format, getDay } from 'date-fns';
+import { getRepository, LessThan, MoreThan, Not, Repository } from 'typeorm';
 
 import { Tickets } from '../../entities/Tickets';
 import { ICloseProps } from '../IResetRepository';
@@ -8,6 +9,39 @@ class TicketsRepository implements ITicketsRepository {
   private ticket: Repository<Tickets>;
   constructor() {
     this.ticket = getRepository(Tickets);
+  }
+  async findSevenData(): Promise<[Tickets[], number]> {
+    const sistema = await this.ticket.query(
+      `SELECT sistema, count(sistema) as quantidade
+      FROM public.chamados 
+      WHERE created > (NOW() - interval '7 days')
+      and created < now() 
+      group by sistema`
+    );
+
+    return sistema;
+  }
+  async findFifteenData(): Promise<[Tickets[], number]> {
+    const sistema = await this.ticket.query(
+      `SELECT sistema, count(sistema) as quantidade
+      FROM public.chamados 
+      WHERE created > (NOW() - interval '15 days')
+      and created < now() 
+      group by sistema`
+    );
+
+    return sistema;
+  }
+  async findThirtyData(): Promise<[Tickets[], number]> {
+    const sistema = await this.ticket.query(
+      `SELECT sistema, count(sistema) as quantidade
+      FROM public.chamados 
+      WHERE created > (NOW() - interval '30 days')
+      and created < now() 
+      group by sistema`
+    );
+
+    return sistema;
   }
   async findByNchamado(nchamado: string): Promise<Tickets> {
     const ticket = await this.ticket.findOne({ nchamado });
@@ -21,7 +55,9 @@ class TicketsRepository implements ITicketsRepository {
     return all;
   }
   async findAssignedTickets(responsavel: string): Promise<Tickets[]> {
-    const all = await this.ticket.find({ responsavel });
+    const all = await this.ticket.find({
+      where: { responsavel, status: Not('Fechado') },
+    });
     return all;
   }
   async updateRespoById(

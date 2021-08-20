@@ -1,12 +1,11 @@
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { container } from 'tsyringe';
 
-import { IRequest } from '../../../../middlewares/UserLogin';
 import { UserLoginUseCase } from './UserLoginUseCase';
 
 class UserLoginController {
-  async handle(request: IRequest, response: Response): Promise<Response> {
-    const { mat: matricula } = request.body;
+  async handle(request: Request, response: Response): Promise<Response> {
+    const { matricula } = request.body;
     const { result } = request;
 
     const userLoginUseCase = container.resolve(UserLoginUseCase);

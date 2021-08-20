@@ -5,18 +5,14 @@ import { ADPromisses } from '../conexao_ad';
 
 dotenv.config();
 
-export interface IRequest extends Request {
-  result: any;
-}
-
 async function connectToAd(
-  request: IRequest,
+  request: Request,
   response: Response,
   next: NextFunction
 ): Promise<void | Response> {
-  const { mat, password } = request.body;
+  const { matricula, password } = request.body;
 
-  if (mat === '' || mat === undefined) {
+  if (matricula === '' || matricula === undefined) {
     return response.json({ status_message: 'A matricula é necessaria' });
   }
 
@@ -27,7 +23,7 @@ async function connectToAd(
   }
 
   const server_ad = process.env.AD_SERVER;
-  const matricula_login = mat + server_ad;
+  const matricula_login = matricula + server_ad;
   const result_conect_ad = await ADPromisses;
   const resultado = await result_conect_ad.loginUser(matricula_login, password);
   if (!resultado.success) {

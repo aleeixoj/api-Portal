@@ -1,5 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 
+import { AppError } from '../../../../errors/AppError';
 import { Types } from '../../entities/Types';
 import { ITypesRepository } from '../../repositories/ITypesRepository';
 
@@ -12,7 +13,7 @@ class FindAllTypesUseCase {
   async execute(): Promise<Types[]> {
     const types = await this.typesRepository.list();
     if (!types) {
-      throw new Error('Não foi possivel buscar');
+      throw new AppError('Não foi possivel buscar');
     }
     return types;
   }

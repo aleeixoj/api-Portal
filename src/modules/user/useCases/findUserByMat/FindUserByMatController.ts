@@ -5,9 +5,9 @@ import { FindUserByMatUseCase } from './FindUserByMatUseCase';
 
 class FindUserByMatController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { authorization } = request.headers;
+    const { matricula } = request.user;
     const findUserByMatUseCase = container.resolve(FindUserByMatUseCase);
-    const userByMat = await findUserByMatUseCase.execute(authorization);
+    const userByMat = await findUserByMatUseCase.execute(matricula);
 
     return response.json({ userByMat });
   }

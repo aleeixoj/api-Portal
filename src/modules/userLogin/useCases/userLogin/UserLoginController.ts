@@ -10,13 +10,9 @@ class UserLoginController {
 
     const userLoginUseCase = container.resolve(UserLoginUseCase);
 
-    try {
-      const token = await userLoginUseCase.execute({ matricula, result });
+    const token = await userLoginUseCase.execute({ matricula, result });
 
-      return response.status(200).json({ matricula, token });
-    } catch (error) {
-      return response.status(400).json({ status_message: error.message });
-    }
+    return response.status(200).json({ matricula, token });
   }
 }
 export { UserLoginController };

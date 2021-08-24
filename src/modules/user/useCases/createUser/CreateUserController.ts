@@ -8,22 +8,19 @@ class CreateUserController {
     const { name, label, value, email, cargo, group, color, matricula } =
       request.body;
     const createUserUseCase = container.resolve(CreateUserUseCase);
-    try {
-      await createUserUseCase.execute({
-        name,
-        matricula,
-        label,
-        value,
-        email,
-        cargo,
-        group,
-        color,
-      });
 
-      return response.status(201).send();
-    } catch (error) {
-      return response.status(400).json({ status_message: error.message });
-    }
+    await createUserUseCase.execute({
+      name,
+      matricula,
+      label,
+      value,
+      email,
+      cargo,
+      group,
+      color,
+    });
+
+    return response.status(201).send();
   }
 }
 

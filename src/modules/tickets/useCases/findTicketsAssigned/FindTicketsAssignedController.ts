@@ -5,11 +5,11 @@ import { FindTicketsAssignedUseCase } from './FindTicketsAssignedUseCase';
 
 class FindTicketsAssignedController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { authorization } = request.headers;
+    const { matricula } = request.user;
     const findTicketsAssignedUseCase = container.resolve(
       FindTicketsAssignedUseCase
     );
-    const responsavel = authorization;
+    const responsavel = matricula;
     const all = await findTicketsAssignedUseCase.execute(responsavel);
 
     return response.json(all);

@@ -1,6 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 
 import { transporter } from '../../../../config/nodemailer';
+import { AppError } from '../../../../errors/AppError';
 import { IUserRepository } from '../../../user/repositories/IUserRepository';
 import { IResetRepository } from '../../repositories/IResetRepository';
 import { ITicketsRepository } from '../../repositories/ITicketsRepository';
@@ -54,7 +55,7 @@ class CreateTicketUseCase {
       matricula === '' ||
       espelho === ''
     ) {
-      throw new Error('É necessario completar o checklist');
+      throw new AppError('É necessario completar o checklist');
     }
     if (tipo === 'Reset') {
       const user = await this.userRepository.findByMat(requisitante);
@@ -68,7 +69,7 @@ class CreateTicketUseCase {
         group: user.group,
       });
       if (!create) {
-        throw new Error('Ocorreu um erro ao criar o chamado');
+        throw new AppError('Ocorreu um erro ao criar o chamado');
       }
       const resetTicket = await this.resetRepository.findById(create.id);
       const parse = `00000000${resetTicket.position}`.slice(-8);
@@ -90,7 +91,7 @@ class CreateTicketUseCase {
       color: user.color,
     });
     if (!create) {
-      throw new Error('Ocorreu um erro ao criar o chamado');
+      throw new AppError('Ocorreu um erro ao criar o chamado');
     }
     const ticket = await this.ticketRepository.findById(create.id);
     const parse = `00000000${ticket.position}`.slice(-8);

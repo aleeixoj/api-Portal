@@ -7,22 +7,18 @@ class UpdateTicketController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { status, description, id } = request.body;
     // const { descr } = request.body.data;
-    const { authorization } = request.headers;
+    const { matricula } = request.user;
     const arquivo = request.file?.filename;
     const updateTicketUseCase = container.resolve(UpdateTicketUseCase);
-    try {
-      await updateTicketUseCase.execute({
-        status,
-        user: authorization,
-        arquivo,
-        description,
-        id,
-      });
+    await updateTicketUseCase.execute({
+      status,
+      user: matricula,
+      arquivo,
+      description,
+      id,
+    });
 
-      return response.status(200).send();
-    } catch (error) {
-      return response.status(400).json({ status_message: error.message });
-    }
+    return response.status(200).send();
   }
 }
 

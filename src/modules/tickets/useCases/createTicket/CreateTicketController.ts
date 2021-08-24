@@ -22,22 +22,17 @@ class CreateTicketController {
     if (matricula === undefined) {
       mat = arquivo;
     }
-    try {
-      const create = await createTicketUseCase.execute({
-        requisitante,
-        tipo,
-        sistema,
-        massivo,
-        matricula: mat,
-        espelho,
-      });
 
-      return response
-        .status(201)
-        .json({ status_message: `Chamado ${create} aberto` });
-    } catch (error) {
-      return response.json({ status_message: error.message });
-    }
+    const create = await createTicketUseCase.execute({
+      requisitante,
+      tipo,
+      sistema,
+      massivo,
+      matricula: mat,
+      espelho,
+    });
+
+    return response.status(201).json({ message: `Chamado ${create} aberto` });
   }
 }
 

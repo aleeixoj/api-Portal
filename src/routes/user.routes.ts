@@ -1,5 +1,6 @@
 import { Router } from 'express';
 
+import { ensureAuthenticated } from '../middlewares/ensureAuthenticated';
 import { CreateUserController } from '../modules/user/useCases/createUser/CreateUserController';
 import { FindAllUsersController } from '../modules/user/useCases/findAllUsers/FindAllUsersController';
 import { FindUserByGroupController } from '../modules/user/useCases/findUserByGroup/FindUserByGroupController';
@@ -11,6 +12,8 @@ const createUserController = new CreateUserController();
 const findAllUsersController = new FindAllUsersController();
 const findAllUserByGroupController = new FindUserByGroupController();
 const findUserByMatController = new FindUserByMatController();
+
+userRouter.use(ensureAuthenticated);
 
 userRouter.post('/', createUserController.handle);
 

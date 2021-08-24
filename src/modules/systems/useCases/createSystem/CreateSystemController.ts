@@ -8,12 +8,8 @@ class CreateSystemController {
     const { system } = request.body;
     const createSystemUseCase = container.resolve(CreateSystemUseCase);
 
-    try {
-      await createSystemUseCase.execute({ label: system, value: system });
-      return response.status(201).send();
-    } catch (error) {
-      return response.status(500).json({ status_message: error.message });
-    }
+    await createSystemUseCase.execute({ label: system, value: system });
+    return response.status(201).send();
   }
 }
 

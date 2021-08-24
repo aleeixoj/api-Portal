@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { connectToAd, IRequest } from '../middlewares/UserLogin';
+import { connectToAd } from '../middlewares/UserLogin';
 import { UserLoginController } from '../modules/userLogin/useCases/userLogin/UserLoginController';
 import { UserLogoutController } from '../modules/userLogin/useCases/userLogout/UserLogoutController';
 

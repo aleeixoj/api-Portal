@@ -12,6 +12,7 @@ interface ICreateUserDTO {
 }
 
 interface IUserRepository {
+  findById(id: string): Promise<User>;
   findByMat(matricula: string): Promise<User>;
   findByGroup(): Promise<User[]>;
   findByName(name: string): Promise<User>;

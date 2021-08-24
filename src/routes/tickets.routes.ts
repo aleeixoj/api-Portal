@@ -2,6 +2,7 @@ import { Router } from 'express';
 import multer from 'multer';
 
 import { multerConfig } from '../config/multer';
+import { ensureAuthenticated } from '../middlewares/ensureAuthenticated';
 import { AssignTicketToUserController } from '../modules/tickets/useCases/assignTicketToUser/AssignTicketToUserController';
 import { CreateTicketController } from '../modules/tickets/useCases/createTicket/CreateTicketController';
 import { FifteenDaysResetsController } from '../modules/tickets/useCases/fifteenDayResets/FifteenDayResetsController';
@@ -39,6 +40,8 @@ const fifteenResetsTicketsController = new FifteenDaysResetsController();
 const thirtynDaysResetsController = new ThirtynDaysResetsController();
 
 const upload = multer(multerConfig);
+
+ticketsRouter.use(ensureAuthenticated);
 
 ticketsRouter.post('/', upload.single('file'), createTicketController.handle);
 

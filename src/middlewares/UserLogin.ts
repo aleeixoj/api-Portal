@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv';
 import { Response, NextFunction, Request } from 'express';
 
 import { ADPromisses } from '../conexao_ad';
+import { AppError } from '../errors/AppError';
 
 dotenv.config();
 
@@ -13,13 +14,11 @@ async function connectToAd(
   const { matricula, password } = request.body;
 
   if (matricula === '' || matricula === undefined) {
-    return response.json({ status_message: 'A matricula é necessaria' });
+    throw new AppError('Matricula necessária', 401);
   }
 
   if (password === '' || password === undefined) {
-    return response.json({
-      status_message: 'A senha é obrigatoria',
-    });
+    throw new AppError('Senha obrigatória', 401);
   }
 
   const server_ad = process.env.AD_SERVER;
@@ -27,9 +26,10 @@ async function connectToAd(
   const result_conect_ad = await ADPromisses;
   const resultado = await result_conect_ad.loginUser(matricula_login, password);
   if (!resultado.success) {
-    return response.send({
-      status_message: 'Erro ao logar, consulte seu CSL para mais informações',
-    });
+    throw new AppError(
+      'Erro ao logar, consulte seu SAL para mais informações',
+      401
+    );
   }
   request.result = resultado;
   return next();

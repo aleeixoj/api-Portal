@@ -1,7 +1,8 @@
-import jwt from 'jsonwebtoken';
+import { sign } from 'jsonwebtoken';
 import { ActiveDirectory } from 'node-ad-tools';
 import { inject, injectable } from 'tsyringe';
 
+import { AppError } from '../../../../errors/AppError';
 import { User } from '../../../user/entities/User';
 import { IUserRepository } from '../../../user/repositories/IUserRepository';
 import { IUserPermissionRepository } from '../../../userPermission/repositories/IPermissionRepository';
@@ -15,8 +16,9 @@ interface IRequest {
 
 interface IResponse {
   token: string;
-  userData: User;
+  createdUser: User;
 }
+
 @injectable()
 class UserLoginUseCase {
   constructor(
@@ -29,7 +31,7 @@ class UserLoginUseCase {
     @inject('SuperPermissionRepository')
     private superRepository: ISuperPermissionRepository
   ) {}
-  private async createUser(matricula: string): Promise<User> {
+  private async createUser(matricula: string): Promise<[User, string]> {
     const user = await this.userLoginRepository.findByMat(matricula);
     let color = 'purple';
     if (user.grupo === 'OPERACIONAL') {
@@ -48,45 +50,56 @@ class UserLoginUseCase {
       group: user.grupo,
       color,
     });
-    const token = jwt.sign({ matricula }, '39037e3095f3328bd2e0ae5938fce30d');
-    return createdUser;
+    const token = sign({}, 'edc038fa909a460a73448bfc5c9af047', {
+      subject: createdUser.id,
+      expiresIn: '1d',
+    });
+    return [createdUser, token];
   }
-  async execute({ matricula, result }: IRequest): Promise<string | void> {
+  async execute({ matricula, result }: IRequest): Promise<string> {
     const dados_user = ActiveDirectory.createUserObj(result.entry);
 
     const userAlreadyExists = await this.userRepository.findByMat(matricula);
     if (userAlreadyExists) {
-      const token = jwt.sign(
-        { matricula },
-        '39037e3095f3328bd2e0ae5938fce30d',
-        {
-          expiresIn: 1440,
-        }
-      );
+      const token = sign({}, 'edc038fa909a460a73448bfc5c9af047', {
+        subject: userAlreadyExists.id,
+        expiresIn: '1d',
+      });
       return token;
     }
     if (dados_user.groups.indexOf('AcessosUSR') > -1) {
       if (!userAlreadyExists) {
         const createdUser = await this.createUser(matricula);
         const superU = await this.superRepository.findBySuper(
-          createdUser.group === 'OPERACIONAL' ? 2 : 1
+          createdUser[0].group === 'OPERACIONAL' ? 2 : 1
         );
         await this.permissionRepository.create({
-          user_id: createdUser.id,
+          user_id: createdUser[0].id,
           super_id: superU.id,
         });
+
+        const token = sign({}, 'edc038fa909a460a73448bfc5c9af047', {
+          subject: createdUser[0].id,
+          expiresIn: '1d',
+        });
+        return token;
       }
     } else if (dados_user.groups.indexOf('AcessosADM') > -1) {
       if (!userAlreadyExists) {
         const createdUser = await this.createUser(matricula);
         const superU = await this.superRepository.findBySuper(5);
         await this.permissionRepository.create({
-          user_id: createdUser.id,
+          user_id: createdUser[0].id,
           super_id: superU.id,
         });
+        const token = sign({}, 'edc038fa909a460a73448bfc5c9af047', {
+          subject: createdUser[0].id,
+          expiresIn: '1d',
+        });
+        return token;
       }
     } else {
-      throw new Error('Você não possui acesso a aplicação');
+      throw new AppError('Você não possui acesso a aplicação', 401);
     }
   }
 }

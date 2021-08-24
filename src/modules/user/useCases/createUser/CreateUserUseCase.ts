@@ -1,5 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 
+import { AppError } from '../../../../errors/AppError';
 import { IUserRepository } from '../../repositories/IUserRepository';
 
 interface IRequest {
@@ -31,7 +32,7 @@ class CreateUserUseCase {
     const userAlreadyExists = await this.userRepository.findByMat(matricula);
 
     if (userAlreadyExists) {
-      throw new Error('User already exists!');
+      throw new AppError('User already exists!');
     }
 
     this.userRepository.create({

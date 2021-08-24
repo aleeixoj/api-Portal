@@ -9,14 +9,8 @@ class FindTicketByNChamadoController {
       FindTicketByNChamadoUseCase
     );
     const { nchamado } = request.params;
-    try {
-      const all = await findTicketByNChamadoUseCase.execute(
-        nchamado.toString()
-      );
-      return response.status(200).json(all);
-    } catch (error) {
-      return response.json({ status_message: error.message });
-    }
+    const all = await findTicketByNChamadoUseCase.execute(nchamado.toString());
+    return response.status(200).json(all);
   }
 }
 

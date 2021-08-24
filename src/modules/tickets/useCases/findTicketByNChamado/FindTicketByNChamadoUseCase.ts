@@ -1,5 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 
+import { AppError } from '../../../../errors/AppError';
 import { Resets } from '../../entities/Resets';
 import { Tickets } from '../../entities/Tickets';
 import { IResetRepository } from '../../repositories/IResetRepository';
@@ -25,7 +26,7 @@ class FindTicketByNChamadoUseCase {
     if (resets) {
       return resets;
     }
-    throw new Error('Chamado não encontrado');
+    throw new AppError('Chamado não encontrado', 404);
   }
 }
 

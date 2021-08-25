@@ -7,10 +7,10 @@ class Super {
   id?: string;
 
   @Column()
-  name: string;
+  label: string;
 
   @Column()
-  super: number;
+  value: number;
 
   constructor() {
     if (!this.id) {

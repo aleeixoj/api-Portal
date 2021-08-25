@@ -39,14 +39,15 @@ class User {
   @UpdateDateColumn()
   lastModified: Date;
 
-  @JoinTable({ name: 'super_user' })
-  @JoinColumn({ name: 'id' })
+  // @JoinTable({ name: 'super_user' })
+  @JoinColumn({ name: 'permission' })
   @OneToOne(() => Super)
-  super: Super;
-  @JoinTable({ name: 'super' })
-  @JoinColumn({ name: 'id' })
-  @OneToOne(() => Permission)
-  permission: Permission;
+  permissions: Super[];
+
+  // @JoinTable({ name: 'super' })
+  // @JoinColumn({ name: 'id' })
+  // @OneToOne(() => Permission)
+  // permission: Permission[];
 
   constructor() {
     if (!this.id) {

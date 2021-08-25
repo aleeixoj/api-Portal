@@ -9,7 +9,10 @@ class UserRepository implements IUserRepository {
     this.repository = getRepository(User);
   }
   async findById(id: string): Promise<User> {
-    const user = await this.repository.findOne(id);
+    const user = await this.repository.findOne({
+      where: { id },
+      relations: ['permissions'],
+    });
     return user;
   }
   async findByName(name: string): Promise<User> {
@@ -21,11 +24,14 @@ class UserRepository implements IUserRepository {
     return users;
   }
   async findByMat(matricula: string): Promise<User> {
-    const user = await this.repository.findOne({ matricula });
+    const user = await this.repository.findOne({
+      where: { matricula },
+      relations: ['permissions'],
+    });
     return user;
   }
   async list(): Promise<User[]> {
-    const users = await this.repository.find();
+    const users = await this.repository.find({ relations: ['permissions'] });
     return users;
   }
   async create({

@@ -1,15 +1,15 @@
 import { Super } from '../entities/Super';
 
 interface ISuperPermissionDTO {
-  name: string;
-  superNumber: number;
+  label: string;
+  value: number;
 }
 
 interface ISuperPermissionRepository {
-  findBySuper(superNumber: number): Promise<Super>;
+  findBySuper(value: number): Promise<Super>;
   findById(id: string): Promise<Super>;
   list(): Promise<Super[]>;
-  create({ name, superNumber }: ISuperPermissionDTO): Promise<void>;
+  create({ label, value }: ISuperPermissionDTO): Promise<void>;
 }
 
 export { ISuperPermissionRepository, ISuperPermissionDTO };

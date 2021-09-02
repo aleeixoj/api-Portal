@@ -13,7 +13,7 @@ import { IUserRepository } from '../../modules/user/repositories/IUserRepository
 import { UserLoginRepository } from '../../modules/userLogin/repositories/implementations/UserLoginRepository';
 import { IUserLoginRepository } from '../../modules/userLogin/repositories/IUserLoginRepository';
 import { UserPermissionRepository } from '../../modules/userPermission/repositories/implementations/PermissionRepository';
-import { SuperPermissionRepository } from '../../modules/userPermission/repositories/implementations/SuperRepository';
+import { SuperRepository } from '../../modules/userPermission/repositories/implementations/SuperRepository';
 import { IUserPermissionRepository } from '../../modules/userPermission/repositories/IPermissionRepository';
 import { ISuperPermissionRepository } from '../../modules/userPermission/repositories/ISuperRepository';
 import { UserTicketsRepository } from '../../modules/userTickets/repositories/implementations/UserTicketRepository';
@@ -37,8 +37,8 @@ container.registerSingleton<IUserLoginRepository>(
 );
 
 container.registerSingleton<ISuperPermissionRepository>(
-  'SuperPermissionRepository',
-  SuperPermissionRepository
+  'SuperRepository',
+  SuperRepository
 );
 
 container.registerSingleton<IUserPermissionRepository>(

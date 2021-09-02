@@ -28,7 +28,7 @@ class UserLoginUseCase {
     private userLoginRepository: IUserLoginRepository,
     @inject('UserPermissionRepository')
     private permissionRepository: IUserPermissionRepository,
-    @inject('SuperPermissionRepository')
+    @inject('SuperRepository')
     private superRepository: ISuperPermissionRepository
   ) {}
   private async createUser(matricula: string): Promise<[User, string]> {

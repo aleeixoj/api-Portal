@@ -19,7 +19,7 @@ class FindUserByIdUseCase {
     private userRepository: IUserRepository,
     @inject('UserPermissionRepository')
     private userPermissionRepository: IUserPermissionRepository,
-    @inject('SuperPermissionRepository')
+    @inject('SuperRepository')
     private superRepository: ISuperPermissionRepository
   ) {}
   async execute(id: string): Promise<User> {

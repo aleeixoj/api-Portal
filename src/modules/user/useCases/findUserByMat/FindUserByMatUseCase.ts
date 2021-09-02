@@ -16,11 +16,7 @@ interface IData {
 class FindUserByMatUseCase {
   constructor(
     @inject('UserRepository')
-    private userRepository: IUserRepository,
-    @inject('UserPermissionRepository')
-    private userPermissionRepository: IUserPermissionRepository,
-    @inject('SuperPermissionRepository')
-    private superRepository: ISuperPermissionRepository
+    private userRepository: IUserRepository
   ) {}
   async execute(matricula: string): Promise<User> {
     const user = await this.userRepository.findByMat(matricula);

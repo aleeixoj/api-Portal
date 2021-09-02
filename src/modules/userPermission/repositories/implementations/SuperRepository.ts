@@ -6,7 +6,7 @@ import {
   ISuperPermissionRepository,
 } from '../ISuperRepository';
 
-class SuperPermissionRepository implements ISuperPermissionRepository {
+class SuperRepository implements ISuperPermissionRepository {
   private repository: Repository<Super>;
   constructor() {
     this.repository = getRepository(Super);
@@ -15,21 +15,24 @@ class SuperPermissionRepository implements ISuperPermissionRepository {
     const superUser = await this.repository.findOne({ id });
     return superUser;
   }
-  async findBySuper(superNumber: number): Promise<Super> {
-    const superU = await this.repository.findOne({ super: superNumber });
+  async findBySuper(value: number): Promise<Super> {
+    const superU = await this.repository.findOne({ value });
     return superU;
   }
   async list(): Promise<Super[]> {
-    const all = await this.repository.find();
+    const all = await this.repository.find({
+      order: { value: 'ASC' },
+      take: 4,
+    });
     return all;
   }
-  async create({ name, superNumber }: ISuperPermissionDTO): Promise<void> {
+  async create({ label, value }: ISuperPermissionDTO): Promise<void> {
     const createU = this.repository.create({
-      name,
-      super: superNumber,
+      label,
+      value,
     });
     await this.repository.save(createU);
   }
 }
 
-export { SuperPermissionRepository };
+export { SuperRepository };

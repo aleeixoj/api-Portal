@@ -42,7 +42,7 @@ class User {
   // @JoinTable({ name: 'super_user' })
   @JoinColumn({ name: 'permission' })
   @OneToOne(() => Super)
-  permissions: Super[];
+  permissions: Super;
 
   // @JoinTable({ name: 'super' })
   // @JoinColumn({ name: 'id' })

@@ -6,6 +6,7 @@ import { FindAllUsersController } from '../modules/user/useCases/findAllUsers/Fi
 import { FindUserByGroupController } from '../modules/user/useCases/findUserByGroup/FindUserByGroupController';
 import { FindUserByIdController } from '../modules/user/useCases/findUserById/FindUserByIdController';
 import { FindUserByMatController } from '../modules/user/useCases/findUserByMat/FindUserByMatController';
+import { UpdateUserController } from '../modules/user/useCases/updateUser/UpdateUserController';
 import { ListPermissionsController } from '../modules/userPermission/useCases/ListPermissionsController';
 
 const userRouter = Router();
@@ -16,6 +17,7 @@ const findAllUserByGroupController = new FindUserByGroupController();
 const findUserByMatController = new FindUserByMatController();
 const findUserByIdController = new FindUserByIdController();
 const listPermissionsController = new ListPermissionsController();
+const updateUserController = new UpdateUserController();
 
 userRouter.use(ensureAuthenticated);
 
@@ -30,5 +32,7 @@ userRouter.get('/matricula', findUserByMatController.handle);
 userRouter.get('/permissions', listPermissionsController.handle);
 
 userRouter.get('/:id', findUserByIdController.handle);
+
+userRouter.patch('/update', updateUserController.handle);
 
 export { userRouter };

@@ -1,14 +1,16 @@
 import { User } from '../entities/User';
 
 interface ICreateUserDTO {
-  matricula: string;
-  name: string;
-  label: string;
-  value: string;
-  email: string;
-  cargo: string;
-  group: string;
-  color: string;
+  id?: string;
+  permission?: string;
+  matricula?: string;
+  name?: string;
+  label?: string;
+  value?: string;
+  email?: string;
+  cargo?: string;
+  group?: string;
+  color?: string;
 }
 
 interface IUserRepository {
@@ -17,6 +19,7 @@ interface IUserRepository {
   findByGroup(): Promise<User[]>;
   findByName(name: string): Promise<User>;
   list(): Promise<User[]>;
+  update({ id, permission }: ICreateUserDTO): Promise<void>;
   create({
     name,
     matricula,

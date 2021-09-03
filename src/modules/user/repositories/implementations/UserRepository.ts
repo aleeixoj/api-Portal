@@ -8,6 +8,11 @@ class UserRepository implements IUserRepository {
   constructor() {
     this.repository = getRepository(User);
   }
+  async update({ id, permission }: ICreateUserDTO): Promise<void> {
+    await this.repository.update(id, {
+      permission,
+    });
+  }
   async findById(id: string): Promise<User> {
     const user = await this.repository.findOne({
       where: { id },

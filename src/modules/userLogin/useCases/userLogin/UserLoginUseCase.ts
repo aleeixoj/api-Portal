@@ -73,9 +73,9 @@ class UserLoginUseCase {
         const superU = await this.superRepository.findBySuper(
           createdUser[0].group === 'OPERACIONAL' ? 2 : 1
         );
-        await this.permissionRepository.create({
-          user_id: createdUser[0].id,
-          super_id: superU.id,
+        await this.userRepository.update({
+          id: createdUser[0].id,
+          permission: superU.id,
         });
 
         const token = sign({}, 'edc038fa909a460a73448bfc5c9af047', {
@@ -88,9 +88,9 @@ class UserLoginUseCase {
       if (!userAlreadyExists) {
         const createdUser = await this.createUser(matricula);
         const superU = await this.superRepository.findBySuper(5);
-        await this.permissionRepository.create({
-          user_id: createdUser[0].id,
-          super_id: superU.id,
+        await this.userRepository.update({
+          id: createdUser[0].id,
+          permission: superU.id,
         });
         const token = sign({}, 'edc038fa909a460a73448bfc5c9af047', {
           subject: createdUser[0].id,

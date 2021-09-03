@@ -38,6 +38,8 @@ class User {
   createdAt: Date;
   @UpdateDateColumn()
   lastModified: Date;
+  @Column()
+  permission: string;
 
   // @JoinTable({ name: 'super_user' })
   @JoinColumn({ name: 'permission' })
